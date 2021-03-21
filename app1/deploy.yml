@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app1-deploy
+  labels:
+    name: app1-deploy
+    app: app1-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: app1-pod
+      app: app1-app
+  template:
+    metadata:
+      name: app1-pod
+      labels:
+        name: app1-pod
+        app: app1-app
+    spec:
+      containers:
+        - name: app1-container
+          image: "590677500889.dkr.ecr.us-east-1.amazonaws.com/app1-repository:latest"
+          imagePullPolicy: Always
+          resources:
+            limits:
+              memory: 512Mi
+              cpu: "1"
+            requests:
+              memory: 128Mi
+              cpu: "0.2"
+          livenessProbe:
+            httpGet:
+              path: /revisasivivo
+              port: 3500
+            initialDelaySeconds: 5
+            periodSeconds: 5
